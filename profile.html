@@ -1,0 +1,194 @@
+<header class="main-header">
+  <div class="header-container">
+    <div class="header-left">
+      <img src="assets/photos/iit.png" alt="IIT Logo" class="header-logo-img">
+      <h1>Espaces Enseignants</h1>
+    </div>
+    
+    <div class="header-right">
+      <div class="user-profile">
+        <button class="profile-btn">
+          <div class="profile-avatar">
+            <img src="assets/photos/teacher.png" alt="Photo enseignant" />
+          </div>
+          <span class="profile-name">Bonjour {{ user?.nom }} {{ user?.prenom }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+
+
+<div class="dashboard-container">
+    <aside class="sidebar" >
+      <div class="sidebar-header">
+        <img src="assets/photos/iit.png" alt="IIT Logo" class="logo-img">
+        <div class="brand-text">
+          <h1>IIT Sfax</h1>
+          <p>Institut International Technologie</p>
+        </div>
+      </div>
+      <br>
+               <ul class="nav-menu">
+                 <li class="nav-item">
+                   <a class="nav-link"  (click)="Accueil()">
+                     <i class="fas fa-user"></i>
+                     <span>Tableau de bord</span>
+                   </a>
+                 </li>
+                 <li class="nav-item active">
+                   <a class="nav-link">
+                     <i class="fas fa-tachometer-alt"></i>
+                     <span>Mon profil</span>
+                   </a>
+                 </li> 
+                <br>
+                 <hr>
+                 <br><br>
+                 <li class="nav-item">
+                  <button mat-menu-item class="deconnecte" (click)="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                  </button>
+                </li> 
+               </ul>
+    </aside>
+  
+
+
+    <section class="main-content">
+
+
+        <div class="dashboard-title">
+          <div class="dashboard-title-text">
+            <h2>Mon profil</h2>
+            <p>Informations personnelles et planning académique</p>
+          </div>  
+        </div>
+
+
+
+        <div class="profile-card-container">
+            <div class="profile-card">
+              <div class="profile-status-badge">Actif</div>
+              
+              <div class="profile-card-content">
+                <div class="profile-avatar-section">
+                  <div class="profile-avatar-circle">
+                    <span class="profile-initials">{{ getInitiales() }}</span>
+                  </div>
+                </div>
+                
+                <div class="profile-info-section">
+                  <h3 class="profile-nom">
+                    {{ getTitre() }} {{ EnseignantCourant?.nom }} {{ EnseignantCourant?.prenom }}
+                  </h3>
+                  
+                  <div class="profile-info-item">
+                    <i class="bi bi-mortarboard profile-icon profile-icon-blue"></i>
+                    <span>{{ getSpecialisation() }}</span>
+                  </div>
+                  
+                  <div class="profile-contact">
+                  <div class="profile-info-item">
+                    <i class="bi bi-envelope profile-icon profile-icon-blue"></i>
+                    <span>{{ getEmail() }}</span>
+                  </div>
+                  
+                  <div class="profile-info-item">
+                    <i class="bi bi-telephone profile-icon profile-icon-green"></i>
+                    <span>{{ getTelephone() }}</span>
+                  </div>
+                </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="dashboard-cards-container">
+            <div class="dashboard-cards">
+              <div class="card">
+                <div class="partie-gauche">
+                  <p>Matières enseignées</p>
+                  <p>{{ EnseignantCourant?.matieresEnseignees?.length }}</p>
+                </div>
+                <div class="partie-droit">
+                    <i class="bi bi-book profile-icon-blue"></i>
+                </div>
+              </div>
+          
+              
+              <!-- Card 2: Heures hebdomadaires -->
+              <div class="card">
+                <div class="partie-gauche">
+                  <p>Séances hebdomadaires</p>
+                  <p>{{EnseignantCourant?.grade?.chargeSurveillance}} Séances</p>
+                </div>
+                <div class="partie-droit">
+                  <i class="bi bi-people"></i>
+                </div>
+              </div>
+          
+              <!-- Card 3: Charge de surveillance -->
+              <div class="card">
+                <div class="partie-gauche">
+                  <p>Charge de surveillance</p>
+                  <p>{{ EnseignantCourant?.nbSeancesASurveiller }} Séances</p>
+                </div>
+                <div class="partie-droit">
+                  <i class="bi bi-book"></i>
+                </div>
+              </div>
+          
+            </div>
+          </div>
+          
+
+          <div class="matieres-cards-container">
+            <div class="matieres-card">
+              <div class="matieres-card-content">
+                <div class="matieres-card-header">
+                  <i class="bi bi-book profile-icon-blue"></i>
+                  <h3>Matières enseignées</h3>
+                </div>
+                <div class="matieres-card-body">
+                  <div class="matieres-grid">
+                    <div class="matiere-item" *ngFor="let matiere of EnseignantCourant?.matieresEnseignees">
+                      {{ matiere.nom }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="seances-card-container">
+            <div class="seances-card">
+              <div class="seances-card-content">
+                <div class="seances-card-header">
+                  <i class="bi bi-clock-fill seances-icon-orange"></i>
+                  <h3>Surveillance assignée</h3>
+                </div>
+                <div class="seances-card-body">
+                  <div class="seance-item" *ngFor="let seance of SeanceChoisi">
+                    <div class="seance-content">
+                      <div class="seance-info-left">
+                        <div><span>Jour :</span> {{ formatDate(seance.dateEpreuve) }}</div>
+                        <div class="seance-date">{{ formatHoraire(seance) }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!SeanceChoisi || SeanceChoisi.length === 0" class="seance-empty">
+                    Aucune séance assignée
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+
+
+          </section>
