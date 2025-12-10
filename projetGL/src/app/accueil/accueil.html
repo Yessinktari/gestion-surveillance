@@ -1,0 +1,461 @@
+
+<header class="main-header">
+  <div class="header-container">
+    <div class="header-left">
+      <img src="assets/photos/fseg.png" alt="fseg Logo" class="header-logo-img">
+      <h1>Espaces Enseignants</h1>
+    </div>
+    
+    <div class="header-right">
+      <div class="user-profile">
+        <button class="profile-btn">
+          <div class="profile-avatar">
+            <img src="assets/photos/teacher.png" alt="Photo enseignant" />
+          </div>
+          <span class="profile-name">Bonjour {{ user?.nom }} {{ user?.prenom }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+        
+
+  <div class="dashboard-container">
+    <aside class="sidebar" >
+      <div class="sidebar-header">
+        <img src="assets/photos/fseg.png" alt="FSEG Logo" class="logo-img">
+        <div class="brand-text">
+          <h1>FSEG Sfax</h1>
+          <p>FACULTÉ DES SCIENCES ÉCONOMIQUES ET GESTION</p>
+        </div>
+      </div>
+      <br>
+               <ul class="nav-menu">
+                 <li class="nav-item active">
+                   <a class="nav-link">
+                     <i class="fas fa-user"></i>
+                     <span>Tableau de bord</span>
+                   </a>
+                 </li>
+                 <li class="nav-item">
+                   <a class="nav-link" (click)="Profile()">
+                     <i class="fas fa-tachometer-alt"></i>
+                     <span>Mon profil</span>
+                   </a>
+                 </li> 
+                <br>
+                 <hr>
+                 <br><br>
+                 <li class="nav-item">
+                  <button mat-menu-item class="deconnecte" (click)="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                  </button>
+                </li> 
+               </ul>
+    </aside>
+    
+  
+
+    <section class="main-content">
+
+      <div *ngIf="messageErreur" class="message-erreur">
+        <span>{{ messageErreur }}</span>
+      
+        <button class="close-btn" (click)="fermerMessageErreur()">
+          &times;
+        </button>
+      </div>
+
+      
+      <div class="dashboard-title">
+        <div class="dashboard-title-text">
+          <h2>Tableau de bord</h2>
+          <p>Bienvenue sur la plateforme d'enseignement de FSEG Sfax</p>
+        </div>
+
+        <button 
+          class="btn-imprimer-voeux" 
+          *ngIf="SeanceChoisi && SeanceChoisi.length"
+          (click)="imprimerVoeux()">
+          <i class="bi bi-printer-fill"></i>
+          Imprimer les vœux ({{ SeanceChoisi.length }})
+        </button>
+
+       
+      </div>
+
+       <div class="dashboard-cards-container">
+        <div class="dashboard-cards">
+          
+          <!-- Card 1: Matières enseignées -->
+          <div class="card">
+            <div class="partie-gauche">
+              <p>Matières enseignées</p>
+              <p>{{ EnseignantCourant?.matieresEnseignees?.length }}</p>
+              <ul>
+                <li *ngFor="let matiere of EnseignantCourant?.matieresEnseignees">
+                  {{ matiere.nom }}
+                </li>
+              </ul>
+            </div>
+            <div class="partie-droit">
+              <i class="bi bi-calendar4"></i>
+            </div>
+          </div>
+      
+          
+          <!-- Card 2: Heures hebdomadaires -->
+          <div class="card">
+            <div class="partie-gauche">
+              <p>Séances d'enseignement hebdomadaires</p>
+              <p>{{EnseignantCourant?.grade?.chargeSurveillance}} Séances</p>
+              <span>Enseignement et cours</span>
+            </div>
+            <div class="partie-droit">
+              <i class="bi bi-people"></i>
+            </div>
+          </div>
+      
+          <!-- Card 3: Charge de surveillance -->
+          <div class="card">
+            <div class="partie-gauche">
+              <p>Charge de surveillance</p>
+              <p>{{EnseignantCourant?.nbSeancesAffectees}} Séances / {{ EnseignantCourant?.nbSeancesASurveiller }} Séances</p>
+              <span>{{EnseignantCourant?.nbSeancesASurveiller - EnseignantCourant?.nbSeancesAffectees}} Séances restantes</span>
+            </div>
+
+
+            <div class="partie-droit">
+              <i class="bi bi-book"></i>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+      
+
+      <br>
+
+    <div class="calendar-container">
+      <div class="calendar-header">
+        <div class="calendar-header-content">
+          <div class="calendar-title-section">
+            <h1><i class="fas fa-calendar"></i> Calendrier des Épreuves</h1>
+            <button class="guide-btn" (click)="showGuide = true" title="Afficher le guide">
+              <i class="bi bi-lightbulb-fill"></i>
+              <span>Guide</span>
+            </button>
+          </div>
+          <p>Cliquez sur un créneau horaire pour voir les séances de surveillance disponibles</p>
+        </div>
+     </div>
+
+     <div class="dialogue" *ngIf="showGuide">
+      <div class="dialogue-backdrop" (click)="showGuide = false"></div>
+      <div class="dialogue-content">
+        <div class="dialogue-header">
+          <div class="dialogue-header-icon">
+            <i class="bi bi-lightbulb-fill"></i>
+          </div>
+          <h2>Guide Complet</h2>
+          <button class="dialogue-close-btn" (click)="showGuide = false" aria-label="Fermer">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+        <div class="dialogue-body">
+          <p class="dialogue-intro">Voici toutes les instructions détaillées pour utiliser le calendrier et réserver vos séances de surveillance :</p>
+          <div class="guide-steps">
+            <div class="guide-step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <p>Après que l'enseignant s'authentifie avec son compte universitaire, il choisit les séances disponibles pour surveiller.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <p>L'enseignant ne peut pas choisir ni les séances complètes ni les séances qui se déroulent lors de son devoir.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <p>Les séances choisies par l'enseignant vont être affectées le jour du devoir à une classe et une salle.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <p>L'enseignant ne peut imprimer la fiche de surveillance que lorsqu'il finit toute sa charge de surveillance.</p>
+              </div>
+            </div>
+            <div class="guide-step">
+              <div class="step-number">5</div>
+              <div class="step-content">
+                <p>L’enseignant peut annuler une séance choisie avant le début du devoir, à condition que cela n’affecte pas la couverture minimale requise pour la surveillance.</p>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="dialogue-footer">
+          <button class="dialogue-btn-close" (click)="showGuide = false">
+            <i class="bi bi-check-circle"></i>
+            J'ai compris
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Jour / Horaire</th>
+          <th *ngFor="let horaire of horaires">{{ horaire }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let jour of jours">
+          <td>{{ formatDate(jour) }}</td>
+        
+          <td *ngFor="let horaire of horaires">
+            @if(SeancesParJour[jour][horaire]) {
+              @if(estMatiereEnseignee(SeancesParJour[jour][horaire].matieres)) {
+                <div class="slot-mon-devoir">
+                  <div class="slot-mon-devoir-title"> ⚠ Mon devoir </div>
+                  <div class="slot-mon-devoir-matieres">
+                    <span
+                      *ngFor="let matiere of getMatieresEnseigneesDansSeance(SeancesParJour[jour][horaire].matieres); let last = last">
+                      {{ matiere.nom }}<span *ngIf="!last">, </span>
+                    </span>
+                  </div>
+                </div>
+              }
+              
+              
+
+
+              @else if(estDejaChoisi(SeancesParJour[jour][horaire])) {
+                <div class="slot-deja-choisie"  (click)="selectionnerSeance(SeancesParJour[jour][horaire])">
+                  Vous avez déjà choisi cette séance
+                </div>
+              }
+              @else if(!estDisponible(SeancesParJour[jour][horaire])) {
+                <div class="slot-complet">
+                  Créneau complet
+                </div>
+              }             
+              
+              @else {
+                <div class="slot-disponible" (click)="selectionnerSeance(SeancesParJour[jour][horaire])">
+                  {{ SeancesParJour[jour][horaire].enseignantsAffecte }} / {{ SeancesParJour[jour][horaire].limiteEnseignants }} enseignants
+                </div>
+              }
+        
+            }
+            @else {
+              <div class="slot-vide"></div>
+            }
+          </td>
+        </tr>        
+      </tbody>
+    </table>
+  </div>
+  <div>
+  </div>
+
+    <div class="legend">
+      <span class="legend-item legend-red">Mon devoir</span>
+      <span class="legend-item legend-blue">Séance choisie</span>
+      <span class="legend-item legend-green">Disponible</span>
+      <span class="legend-item legend-red-light">Indisponible (complet)</span>
+      <span class="legend-item legend-empty">Aucune séance</span>
+    </div>
+  </div>
+
+@if (SeanceChoisi && SeanceChoisi.length) {
+  <div class="voeux-grid">
+    <div class="voeux-header">
+      <div>
+        <p class="voeux-title">
+          <i class="bi bi-check2-circle"></i>
+          Mes vœux de surveillance
+          <span>({{ SeanceChoisi.length }})</span>
+        </p>
+        <p class="voeux-subtitle">
+          Consultez et imprimez vos séances réservées pour assurer la surveillance des épreuves.
+        </p>
+      </div>
+      <div class="voeux-total">{{ getTotalHeuresVoeux() }}</div>
+    </div>
+
+
+
+
+    
+    <div class="voeux-list">
+      <div class="voeu-card" *ngFor="let seance of SeanceChoisi; index as i">
+        <div class="voeu-card-top">
+          <span class="voeu-rank">#{{ i + 1 }}</span>
+          <div class="voeu-matiere">{{ getNomMatiere(seance) || 'Séance' }}</div>
+          <span class="voeu-chip" *ngIf="getFiliere(seance)">{{ getFiliere(seance) }}</span>
+          <button class="voeu-remove" type="button" (click)="selectionnerSeance(seance)" aria-label="Se désinscrire">
+            <i class="bi bi-x-circle"></i>
+          </button>
+        </div>
+
+        <div class="voeu-details">
+          <div><span>Jour :</span> {{ formatDate(seance.dateEpreuve) }}</div>
+          <div><span>Horaire :</span> {{ formatHoraire(seance) }}</div>
+          <div><span>Classe :</span> {{ getClasseLibelle(seance) }}</div>
+          <div><span>Salle :</span> {{ getSalle(seance) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="voeux-note">
+      <strong>Note :</strong> Cliquez sur le bouton « Imprimer les vœux » en haut de la page pour générer votre fiche de surveillance officielle.
+    </div>
+  </div>
+}
+
+
+<section class="fiche-impression" *ngIf="SeanceChoisi && SeanceChoisi.length">
+  <header class="fiche-hero">
+    <p class="fiche-hero-surtitre">Institut International de Technologie</p>
+    <h1>FSEG</h1>
+    <p class="fiche-hero-titre">Fiche des vœux de surveillance - Session {{ dateImpression | date:'yyyy' }}</p>
+  </header>
+
+  <div class="fiche-info-card">
+    <p><strong>Enseignant :</strong> {{ EnseignantCourant?.nom }} {{ EnseignantCourant?.prenom }}</p>
+    <p><strong>Département :</strong> {{ EnseignantCourant?.section || '—' }}</p>
+    <p><strong>Email :</strong> {{ EnseignantCourant?.email || EnseignantCourant?.login || '—' }}</p>
+    <p><strong>Date d'impression :</strong> {{ dateImpression | date:'EEEE d MMMM y' }}</p>
+  </div>
+
+  <div class="fiche-table-wrapper">
+    <h2>Séances de surveillance choisies ({{ SeanceChoisi.length }})</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Jour</th>
+          <th>Horaire</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let seance of SeanceChoisi; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ formatDate(seance.dateEpreuve) }}</td>
+          <td>{{ formatHoraire(seance) }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Séances de votre matières enseignées</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Jour</th>
+          <th>Horaire</th>
+          <th>Matière</th>
+        </tr>
+      </thead>
+    
+      <tbody>
+
+        <tr *ngFor="let jour of joursAvecDevoir; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ formatDate(jour) }}</td>
+          <td>
+            <ng-container *ngFor="let horaire of horaires">
+              <ng-container *ngIf="SeancesParJour[jour][horaire]">
+                <ng-container *ngIf="estMatiereEnseignee(SeancesParJour[jour][horaire].matieres)">
+                  {{ horaire }}<br>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container *ngFor="let horaire of horaires">
+              <ng-container *ngIf="SeancesParJour[jour][horaire]">
+    
+                <ng-container *ngIf="estMatiereEnseignee(SeancesParJour[jour][horaire].matieres)">
+                  <span *ngFor="let matiere of getMatieresEnseigneesDansSeance(SeancesParJour[jour][horaire].matieres); let last = last">
+                    {{ matiere.nom }}<span *ngIf="!last">, </span>
+                  </span>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    
+
+
+  </div>
+
+  <div class="fiche-total">
+    Total d'heures de surveillance : <strong>{{ getTotalHeuresVoeux() }}</strong>
+  </div>
+
+  <br>
+
+  <footer class="fiche-footer">
+    FACULTÉ DES SCIENCES ÉCONOMIQUES ET GESTION - Sfax rue aéorport, Tunis ·
+    Tél: +216 71 123 456 · Email: contact@fsegs.tn · Web: www.fsegs.tn
+  </footer>
+</section>
+
+
+      <div class="dashboard-contact-container">
+        <div class="dashboard-contact">
+
+          <div class="contact-card"> 
+          <i class="bi bi-geo-alt-fill"></i>
+          <p>Adresse</p>
+          <p>Avenue de la Technologie, Sfax, Tunisie  </p>
+          </div>
+
+          <div class="contact-card"> 
+            <i class="bi bi-telephone"></i>
+            <p>Téléphone</p>
+            <p>+216 71 123 456</p>
+            <p>+216 71 123 457</p>
+            </div>
+
+            <div class="contact-card"> 
+              <i class="bi bi-envelope"></i>
+              <p>Email</p>
+              <p>contact@fsegs.tn</p>
+              <p>scolarite@fsegs.tn</p>
+              </div>
+
+              <div class="contact-card"> 
+               <i class="bi bi-globe"></i>
+                <p>Site web</p>
+                <p>www.fsegs.tn</p>
+                </div>
+
+
+        </div>
+      </div>
+
+      
+      </section>
+
+
+
+

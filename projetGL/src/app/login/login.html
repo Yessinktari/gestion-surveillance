@@ -1,0 +1,112 @@
+
+<div class="login-container">
+    <div class="login-card">
+      
+      <!-- Left Block - Form -->
+      <div class="login-leftBlock">
+        <div class="login-header">
+          <h1>Se connecter</h1>
+          <p>Connectez-vous à votre compte Enseignant </p>
+        </div>
+  
+        <form (ngSubmit)="onLogin()" class="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <div class="input-wrapper">
+              <i class="icon fas fa-envelope"></i>
+              <input 
+                type="email" 
+                id="email" 
+                [(ngModel)]="email" 
+                name="email" 
+                required 
+                placeholder="votre@email.com" 
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <!-- Password Field -->
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <div class="input-wrapper">
+              <i class="icon fas fa-lock"></i>
+              <input 
+                type="password" 
+                id="password" 
+                [(ngModel)]="password" 
+                name="password" 
+                required 
+                placeholder="••••••••" 
+                class="form-control"
+              />
+            </div>
+          </div>
+    
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="error-message">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>{{ errorMessage }}</span>
+          </div>
+  
+          <!-- Forgot Password -->
+          <div class="forgot-password">
+            <a href="#">Mot de passe oublié ?</a>
+          </div>
+    
+          <!-- Submit Button -->
+          <div class="form-footer">
+            <button type="submit" class="login-btn">
+              <i class="fas fa-sign-in-alt"></i>
+              <span>Se connecter</span>
+            </button>
+          </div>
+        </form>
+  
+        <!-- Back to Home -->
+        <div class="back-link">
+          <a href="#">
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour à la page d'accueil</span>
+          </a>
+        </div>
+      </div>
+  
+      <!-- Right Block - Branding -->
+      <div class="login-rightBlock">
+        <div class="branding-content">
+          <!-- IIT Logo -->
+            <div class="logo-container">
+              <div class="logo-wrapper">
+                <img src="/assets/photos/fseg.png" alt="Logo IIT" class="campus-image">
+                <div class="logo-glow"></div>
+              </div>
+            </div>
+  
+          <!-- IIT Text -->
+          <div class="branding-text">
+            <h2 class="iit-title">FSEG SFAX</h2>
+            <div class="institute-name">
+              <p>FACULTÉ</p>
+              <p>DES SCIENCES ÉCONOMIQUES ET GESTION</p>
+            </div>
+          </div>
+  
+          <!-- Decorative Elements -->
+          <div class="decorative-elements">
+            <div class="decorative-lines">
+              <div class="line"></div>
+              <div class="dot"></div>
+              <div class="line"></div>
+            </div>
+            <div class="floating-elements">
+              <div class="floating-circle circle-1"></div>
+              <div class="floating-circle circle-2"></div>
+              <div class="floating-circle circle-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
